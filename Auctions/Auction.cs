@@ -44,7 +44,7 @@ namespace _11._Working_with_file_system_and_streams.Auctions
 
         public List<BidDTO> Bids { get; } = [];
 
-        public void Start()
+        public async void Start()
         {
             try
             {
@@ -56,30 +56,30 @@ namespace _11._Working_with_file_system_and_streams.Auctions
                 checkForTime.Elapsed += (sender, e) => Stop(sender, e, checkForTime);
                 checkForTime.Enabled = true;
 
-                ALogger.Log(ELogStatus.SUCCESS);
+                await ALogger.Log(ELogStatus.SUCCESS);
             }
             catch (Exception)
             {
-                ALogger.Log(ELogStatus.FAILURE);
+                await ALogger.Log(ELogStatus.FAILURE);
             }
         }
 
-        public void Stop(object? sender, ElapsedEventArgs e, System.Timers.Timer timer)
+        public async void Stop(object? sender, ElapsedEventArgs e, System.Timers.Timer timer)
         {
             try
             {
                 AuctionStatus = EAcutionStatus.FINISHED;
                 timer.Stop();
 
-                ALogger.Log(ELogStatus.SUCCESS);
+                await ALogger.Log(ELogStatus.SUCCESS);
             }
             catch (Exception)
             {
-                ALogger.Log(ELogStatus.FAILURE);
+                await ALogger.Log(ELogStatus.FAILURE);
             }
         }
 
-        public void PlaceBid(BidDTO bid)
+        public async void PlaceBid(BidDTO bid)
         {
             try
             {
@@ -91,11 +91,11 @@ namespace _11._Working_with_file_system_and_streams.Auctions
 
                 Bids.Add(bid);
 
-                ALogger.Log(ELogStatus.SUCCESS);
+                await ALogger.Log(ELogStatus.SUCCESS);
             }
             catch (Exception)
             {
-                ALogger.Log(ELogStatus.FAILURE);
+                await ALogger.Log(ELogStatus.FAILURE);
             }
         }
     }

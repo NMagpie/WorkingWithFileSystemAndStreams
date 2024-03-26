@@ -18,7 +18,7 @@ namespace _11._Working_with_file_system_and_streams.Services
             }
         }
 
-        public Auction? CreateAuction(TimeSpan duration, DateTime? timeStart = null)
+        public async Task<Auction?> CreateAuction(TimeSpan duration, DateTime? timeStart = null)
         {
             try
             {
@@ -26,13 +26,13 @@ namespace _11._Working_with_file_system_and_streams.Services
 
                 _auctions.Add(auction);
 
-                ALogger.Log(ELogStatus.SUCCESS);
+                await ALogger.Log(ELogStatus.SUCCESS);
 
                 return auction;
             }
             catch (Exception)
             {
-                ALogger.Log(ELogStatus.FAILURE);
+                await ALogger.Log(ELogStatus.FAILURE);
                 return null;
             }
         }
