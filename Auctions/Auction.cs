@@ -44,16 +44,17 @@ namespace _11._Working_with_file_system_and_streams.Auctions
 
         public List<BidDTO> Bids { get; } = [];
 
-        public async void Start()
+        public async Task Start()
         {
             try
             {
                 TimeStart = DateTime.Now;
                 AuctionStatus = EAcutionStatus.STARTED;
 
-                var checkForTime = new System.Timers.Timer(AuctionDuration.Milliseconds);
+                var checkForTime = new System.Timers.Timer(AuctionDuration.TotalMilliseconds);
 
-                checkForTime.Elapsed += (sender, e) => Stop(sender, e, checkForTime);
+                checkForTime.Elapsed += async (sender, e) => await Stop(sender, e, checkForTime);
+                   
                 checkForTime.Enabled = true;
 
                 await ALogger.Log(ELogStatus.SUCCESS);
@@ -64,7 +65,7 @@ namespace _11._Working_with_file_system_and_streams.Auctions
             }
         }
 
-        public async void Stop(object? sender, ElapsedEventArgs e, System.Timers.Timer timer)
+        public async Task Stop(object? sender, ElapsedEventArgs e, System.Timers.Timer timer)
         {
             try
             {
@@ -79,7 +80,7 @@ namespace _11._Working_with_file_system_and_streams.Auctions
             }
         }
 
-        public async void PlaceBid(BidDTO bid)
+        public async Task PlaceBid(BidDTO bid)
         {
             try
             {
@@ -88,6 +89,8 @@ namespace _11._Working_with_file_system_and_streams.Auctions
 
                 if (_timeEnd < DateTime.Now)
                     return;
+
+                bid.AuctionId = Id;
 
                 Bids.Add(bid);
 
